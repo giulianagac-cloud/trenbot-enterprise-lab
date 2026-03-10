@@ -1,0 +1,13 @@
+{
+  "name": "trenbot-enterprise",
+  "private": true,
+  "workspaces": [
+    "apps/frontend"
+  ],
+  "scripts": {
+    "dev:frontend": "npm --workspace apps/frontend run dev",
+    "storybook": "npm --workspace apps/frontend run storybook",
+    "build:frontend": "npm --workspace apps/frontend run build"
+  }
+}
+
