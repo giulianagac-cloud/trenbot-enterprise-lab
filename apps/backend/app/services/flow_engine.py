@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from app.core.messages import ACCESO_RESPUESTA, ADMINISTRACION_PERSONAL_MENU, BUSQUEDAS_MENU, CERTIFICADO_RESPUESTA, LICENCIAS_MENU, SERVICIO_MEDICO_MENU, SOPORTE_MENU, VACACIONES_RESPUESTA, VACANTES_RESPUESTA, VOLVER_MENU_PRINCIPAL
+from app.core.messages import ACCESO_RESPUESTA, ADMINISTRACION_PERSONAL_MENU, BUSQUEDAS_MENU, CERTIFICADO_RESPUESTA, EXAMEN_RESPUESTA, LICENCIAS_MENU, MUDANZA_RESPUESTA, SERVICIO_MEDICO_MENU, SOPORTE_MENU, VACACIONES_RESPUESTA, VACANTES_RESPUESTA, VOLVER_MENU_PRINCIPAL
 from app.domain.conversation import ConversationState
 
 
@@ -118,19 +118,13 @@ class FlowEngine:
             if normalized in ("b", "b.") or any(word in normalized for word in ("examen", "examenes")):
                 return FlowResult(
                     flow_state="justificar_examen",
-                    reply_text=(
-                        "Para justificar licencia por examen, debés presentar el comprobante correspondiente. "
-                        "Podés descargar el formulario en el siguiente enlace."
-                    ),
+                    reply_text=EXAMEN_RESPUESTA,
                 )
 
             if normalized in ("c", "c.") or any(word in normalized for word in ("mudanza",)):
                 return FlowResult(
                     flow_state="justificar_mudanza",
-                    reply_text=(
-                        "Para justificar licencia por mudanza, debés completar la documentación requerida. "
-                        "Podés descargar el formulario en el siguiente enlace."
-                    ),
+                    reply_text=MUDANZA_RESPUESTA,
                 )
 
         return None

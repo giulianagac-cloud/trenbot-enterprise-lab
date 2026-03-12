@@ -26,3 +26,7 @@ ACCESO_RESPUESTA = (
 VOLVER_MENU_PRINCIPAL = "Volviste al menú principal."
 
 ADMINISTRACION_PERSONAL_MENU = "Ingresaste a Administración de Personal. Podés elegir: Licencias disponibles o Justificar licencias."
+
+EXAMEN_RESPUESTA = "Para justificar licencia por examen, debés presentar el comprobante correspondiente. Podés descargar el formulario en el siguiente enlace."
+
+MUDANZA_RESPUESTA = "Para justificar licencia por mudanza, debés completar la documentación requerida. Podés descargar el formulario en el siguiente enlace."
