@@ -24,3 +24,5 @@ ACCESO_RESPUESTA = (
 )
 
 VOLVER_MENU_PRINCIPAL = "Volviste al menú principal."
+
+ADMINISTRACION_PERSONAL_MENU = "Ingresaste a Administración de Personal. Podés elegir: Licencias disponibles o Justificar licencias."

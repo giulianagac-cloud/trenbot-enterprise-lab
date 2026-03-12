@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from app.core.messages import ACCESO_RESPUESTA, BUSQUEDAS_MENU, CERTIFICADO_RESPUESTA, LICENCIAS_MENU, SERVICIO_MEDICO_MENU, SOPORTE_MENU, VACACIONES_RESPUESTA, VACANTES_RESPUESTA, VOLVER_MENU_PRINCIPAL
+from app.core.messages import ACCESO_RESPUESTA, ADMINISTRACION_PERSONAL_MENU, BUSQUEDAS_MENU, CERTIFICADO_RESPUESTA, LICENCIAS_MENU, SERVICIO_MEDICO_MENU, SOPORTE_MENU, VACACIONES_RESPUESTA, VACANTES_RESPUESTA, VOLVER_MENU_PRINCIPAL
 from app.domain.conversation import ConversationState
 
 
@@ -19,10 +19,7 @@ class FlowEngine:
             if any(word in normalized for word in ("administracion", "personal", "licencias", "admin")):
                 return FlowResult(
                     flow_state="administracion_personal_menu",
-                    reply_text=(
-                        "Ingresaste a Administración de Personal. "
-                        "Podés elegir: Licencias disponibles o Justificar licencias."
-                    ),
+                    reply_text=ADMINISTRACION_PERSONAL_MENU,
                 )
 
             if any(word in normalized for word in ("busquedas", "busqueda")):
