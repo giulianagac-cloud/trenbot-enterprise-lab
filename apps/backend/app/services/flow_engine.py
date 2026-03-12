@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from app.core.messages import BUSQUEDAS_MENU, LICENCIAS_MENU, VACACIONES_RESPUESTA
+from app.core.messages import ACCESO_RESPUESTA, BUSQUEDAS_MENU, CERTIFICADO_RESPUESTA, LICENCIAS_MENU, SERVICIO_MEDICO_MENU, SOPORTE_MENU, VACACIONES_RESPUESTA
 from app.domain.conversation import ConversationState
 
 
@@ -34,13 +34,13 @@ class FlowEngine:
             if any(word in normalized for word in ("medico", "servicio medico")):
                 return FlowResult(
                     flow_state="servicio_medico_menu",
-                    reply_text="Ingresaste al módulo de Servicio Médico.",
+                    reply_text=SERVICIO_MEDICO_MENU,
                 )
 
             if "soporte" in normalized:
                 return FlowResult(
                     flow_state="soporte_menu",
-                    reply_text="Ingresaste al módulo de Soporte.",
+                    reply_text=SOPORTE_MENU,
                 )
 
         return None
@@ -66,7 +66,7 @@ class FlowEngine:
             if any(word in normalized for word in ("turno", "medico", "certificado")):
                 return FlowResult(
                     flow_state="servicio_medico_menu",
-                    reply_text="Podés consultar turnos, certificados médicos o gestiones vinculadas al Servicio Médico.",
+                    reply_text=CERTIFICADO_RESPUESTA,
                 )
 
         return None
@@ -79,7 +79,7 @@ class FlowEngine:
             if any(word in normalized for word in ("app", "problema", "acceso", "soporte")):
                 return FlowResult(
                     flow_state="soporte_menu",
-                    reply_text="Podés informar problemas de acceso, uso de la app o consultas de soporte interno.",
+                    reply_text=ACCESO_RESPUESTA,
                 )
 
         return None
