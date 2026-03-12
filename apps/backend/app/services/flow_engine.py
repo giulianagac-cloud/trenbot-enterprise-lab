@@ -86,16 +86,16 @@ class FlowEngine:
     ) -> FlowResult | None:
         # Submenú Administración de Personal
         if state.flow_state == "administracion_personal_menu":
+            if any(word in normalized for word in ("licencias disponibles", "disponibles", "vacaciones", "dias", "saldo")):
+                return FlowResult(
+                    flow_state="licencias_disponibles",
+                    reply_text=LICENCIAS_DISPONIBLES_RESPUESTA,
+                )
+
             if any(word in normalized for word in ("justificar", "licencia", "justificar licencia")):
                 return FlowResult(
                     flow_state="justificar_licencias_menu",
                     reply_text=LICENCIAS_MENU,
-                )
-
-            if any(word in normalized for word in ("licencias disponibles", "vacaciones", "dias", "saldo")):
-                return FlowResult(
-                    flow_state="licencias_disponibles",
-                    reply_text=LICENCIAS_DISPONIBLES_RESPUESTA,
                 )
 
         return None
