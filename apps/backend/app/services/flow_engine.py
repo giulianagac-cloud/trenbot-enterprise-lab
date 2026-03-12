@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from app.core.messages import ACCESO_RESPUESTA, BUSQUEDAS_MENU, CERTIFICADO_RESPUESTA, LICENCIAS_MENU, SERVICIO_MEDICO_MENU, SOPORTE_MENU, VACACIONES_RESPUESTA, VOLVER_MENU_PRINCIPAL
+from app.core.messages import ACCESO_RESPUESTA, BUSQUEDAS_MENU, CERTIFICADO_RESPUESTA, LICENCIAS_MENU, SERVICIO_MEDICO_MENU, SOPORTE_MENU, VACACIONES_RESPUESTA, VACANTES_RESPUESTA, VOLVER_MENU_PRINCIPAL
 from app.domain.conversation import ConversationState
 
 
@@ -53,7 +53,7 @@ class FlowEngine:
             if any(word in normalized for word in ("vacantes", "internas", "busquedas")):
                 return FlowResult(
                     flow_state="busquedas_internas_menu",
-                    reply_text="Podés consultar búsquedas internas vigentes o futuras oportunidades dentro de la empresa.",
+                    reply_text=VACANTES_RESPUESTA,
                 )
 
         return None
