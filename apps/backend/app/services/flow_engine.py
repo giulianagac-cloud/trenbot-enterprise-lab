@@ -131,6 +131,7 @@ class FlowEngine:
             "licencias_menu",
             "administracion_personal_menu",
             "justificar_licencias_menu",
+            "licencias_disponibles",
             "busquedas_internas_menu",
             "servicio_medico_menu",
             "soporte_menu",
