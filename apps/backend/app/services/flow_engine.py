@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+from app.core.messages import BUSQUEDAS_MENU, LICENCIAS_MENU, VACACIONES_RESPUESTA
 from app.domain.conversation import ConversationState
 
 
@@ -27,7 +28,7 @@ class FlowEngine:
             if any(word in normalized for word in ("busquedas", "busqueda")):
                 return FlowResult(
                     flow_state="busquedas_internas_menu",
-                    reply_text="Ingresaste al módulo de Búsquedas Internas.",
+                    reply_text=BUSQUEDAS_MENU,
                 )
 
             if any(word in normalized for word in ("medico", "servicio medico")):
@@ -91,10 +92,7 @@ class FlowEngine:
             if any(word in normalized for word in ("justificar", "licencia", "justificar licencia")):
                 return FlowResult(
                     flow_state="justificar_licencias_menu",
-                    reply_text=(
-                        "¿Qué licencia querés justificar? "
-                        "Podés elegir: A. Vacaciones, B. Examen, C. Mudanza."
-                    ),
+                    reply_text=LICENCIAS_MENU,
                 )
 
             if any(word in normalized for word in ("licencias disponibles", "vacaciones", "dias", "saldo")):
@@ -117,10 +115,7 @@ class FlowEngine:
             if normalized in ("a", "a.") or any(word in normalized for word in ("vacaciones", "vacacion")):
                 return FlowResult(
                     flow_state="justificar_vacaciones",
-                    reply_text=(
-                        "Para justificar vacaciones, la solicitud debe realizarse con 25 días de anticipación. "
-                        "Podés descargar el formulario correspondiente en el siguiente enlace."
-                    ),
+                    reply_text=VACACIONES_RESPUESTA,
                 )
 
             if normalized in ("b", "b.") or any(word in normalized for word in ("examen", "examenes")):
