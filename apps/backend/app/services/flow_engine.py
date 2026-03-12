@@ -140,6 +140,18 @@ class FlowEngine:
 
     def next_step(self, state: ConversationState, user_input: str) -> FlowResult:
         normalized = user_input.lower().strip()
+        if state.flow_state in (
+            "licencias_menu",
+            "administracion_personal_menu",
+            "justificar_licencias_menu",
+            "busquedas_internas_menu",
+            "servicio_medico_menu",
+            "soporte_menu",
+        ) and normalized in ("volver", "menu", "menú", "inicio"):
+            return FlowResult(
+                flow_state="main_menu",
+                reply_text="Volviste al menú principal."
+            )
 
         # Menú principal
         result = self._handle_main_menu(state, normalized)
