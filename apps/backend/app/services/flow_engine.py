@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from app.core.messages import ACCESO_RESPUESTA, BUSQUEDAS_MENU, CERTIFICADO_RESPUESTA, LICENCIAS_MENU, SERVICIO_MEDICO_MENU, SOPORTE_MENU, VACACIONES_RESPUESTA
+from app.core.messages import ACCESO_RESPUESTA, BUSQUEDAS_MENU, CERTIFICADO_RESPUESTA, LICENCIAS_MENU, SERVICIO_MEDICO_MENU, SOPORTE_MENU, VACACIONES_RESPUESTA, VOLVER_MENU_PRINCIPAL
 from app.domain.conversation import ConversationState
 
 
@@ -150,7 +150,7 @@ class FlowEngine:
         ) and normalized in ("volver", "menu", "menú", "inicio"):
             return FlowResult(
                 flow_state="main_menu",
-                reply_text="Volviste al menú principal."
+                reply_text=VOLVER_MENU_PRINCIPAL
             )
 
         # Menú principal

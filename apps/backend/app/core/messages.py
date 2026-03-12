@@ -22,3 +22,5 @@ SOPORTE_MENU = "Ingresaste al módulo de Soporte."
 ACCESO_RESPUESTA = (
     "Podés informar problemas de acceso, uso de la app o consultas de soporte interno."
 )
+
+VOLVER_MENU_PRINCIPAL = "Volviste al menú principal."
