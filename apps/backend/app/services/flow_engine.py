@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from app.core.messages import ACCESO_RESPUESTA, ADMINISTRACION_PERSONAL_MENU, BUSQUEDAS_MENU, CERTIFICADO_RESPUESTA, EXAMEN_RESPUESTA, LICENCIAS_MENU, MUDANZA_RESPUESTA, SERVICIO_MEDICO_MENU, SOPORTE_MENU, VACACIONES_RESPUESTA, VACANTES_RESPUESTA, VOLVER_MENU_PRINCIPAL
+from app.core.messages import ACCESO_RESPUESTA, ADMINISTRACION_PERSONAL_MENU, BUSQUEDAS_MENU, CERTIFICADO_RESPUESTA, EXAMEN_RESPUESTA, LICENCIAS_DISPONIBLES_RESPUESTA, LICENCIAS_MENU, MUDANZA_RESPUESTA, SERVICIO_MEDICO_MENU, SOPORTE_MENU, VACACIONES_RESPUESTA, VACANTES_RESPUESTA, VOLVER_MENU_PRINCIPAL
 from app.domain.conversation import ConversationState
 
 
@@ -95,11 +95,7 @@ class FlowEngine:
             if any(word in normalized for word in ("licencias disponibles", "vacaciones", "dias", "saldo")):
                 return FlowResult(
                     flow_state="licencias_disponibles",
-                    reply_text=(
-                        "Puedo ayudarte a consultar las licencias disponibles. "
-                        "Más adelante este flujo se conectará con SAP para informarte, por ejemplo, "
-                        "cuántos días de vacaciones tenés disponibles."
-                    ),
+                    reply_text=LICENCIAS_DISPONIBLES_RESPUESTA,
                 )
 
         return None

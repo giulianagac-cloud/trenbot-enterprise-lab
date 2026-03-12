@@ -27,6 +27,12 @@ VOLVER_MENU_PRINCIPAL = "Volviste al menú principal."
 
 ADMINISTRACION_PERSONAL_MENU = "Ingresaste a Administración de Personal. Podés elegir: Licencias disponibles o Justificar licencias."
 
+LICENCIAS_DISPONIBLES_RESPUESTA = (
+    "Puedo ayudarte a consultar las licencias disponibles. "
+    "Más adelante este flujo se conectará con SAP para informarte, por ejemplo, "
+    "cuántos días de vacaciones tenés disponibles."
+)
+
 EXAMEN_RESPUESTA = "Para justificar licencia por examen, debés presentar el comprobante correspondiente. Podés descargar el formulario en el siguiente enlace."
 
 MUDANZA_RESPUESTA = "Para justificar licencia por mudanza, debés completar la documentación requerida. Podés descargar el formulario en el siguiente enlace."
