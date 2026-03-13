@@ -26,11 +26,24 @@ def test_flow_engine_routes_from_administracion_personal_menu(
     assert result.flow_state == expected_flow_state
 
 
-def test_flow_engine_returns_to_main_menu_from_licencias_disponibles() -> None:
+@pytest.mark.parametrize(
+    "initial_flow_state",
+    [
+        "administracion_personal_menu",
+        "justificar_licencias_menu",
+        "licencias_disponibles",
+        "busquedas_internas_menu",
+        "servicio_medico_menu",
+        "soporte_menu",
+    ],
+)
+def test_flow_engine_returns_to_main_menu_from_submenus(
+    initial_flow_state: str,
+) -> None:
     engine = FlowEngine()
     state = ConversationState(
         session_id="test-session",
-        flow_state="licencias_disponibles",
+        flow_state=initial_flow_state,
     )
 
     result = engine.next_step(state=state, user_input="volver")
