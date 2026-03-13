@@ -52,14 +52,26 @@ def test_flow_engine_returns_module_fallback_from_administracion_personal_menu()
     assert result.reply_text == FALLBACK_MODULE_MENU
 
 
-def test_flow_engine_routes_from_main_menu_to_administracion_personal() -> None:
+@pytest.mark.parametrize(
+    "user_input",
+    [
+        "administracion",
+        "admin",
+        "adm personal",
+        "personal",
+        "licencias",
+    ],
+)
+def test_flow_engine_routes_from_main_menu_to_administracion_personal(
+    user_input: str,
+) -> None:
     engine = FlowEngine()
     state = ConversationState(
         session_id="test-session",
         flow_state="main_menu",
     )
 
-    result = engine.next_step(state=state, user_input="administracion")
+    result = engine.next_step(state=state, user_input=user_input)
 
     assert result.flow_state == "administracion_personal_menu"
     assert result.reply_text == ADMINISTRACION_PERSONAL_MENU
