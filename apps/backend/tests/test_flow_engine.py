@@ -52,16 +52,28 @@ def test_flow_engine_returns_to_main_menu_from_submenus(
     assert result.reply_text == VOLVER_MENU_PRINCIPAL
 
 
-def test_flow_engine_returns_module_fallback_from_administracion_personal_menu() -> None:
+@pytest.mark.parametrize(
+    "initial_flow_state",
+    [
+        "administracion_personal_menu",
+        "justificar_licencias_menu",
+        "busquedas_internas_menu",
+        "servicio_medico_menu",
+        "soporte_menu",
+    ],
+)
+def test_flow_engine_returns_module_fallback_from_submenus(
+    initial_flow_state: str,
+) -> None:
     engine = FlowEngine()
     state = ConversationState(
         session_id="test-session",
-        flow_state="administracion_personal_menu",
+        flow_state=initial_flow_state,
     )
 
     result = engine.next_step(state=state, user_input="asdf")
 
-    assert result.flow_state == "administracion_personal_menu"
+    assert result.flow_state == initial_flow_state
     assert result.reply_text == FALLBACK_MODULE_MENU
 
 
@@ -185,19 +197,6 @@ def test_flow_engine_returns_servicio_medico_response(
     assert result.reply_text == CERTIFICADO_RESPUESTA
 
 
-def test_flow_engine_returns_servicio_medico_fallback() -> None:
-    engine = FlowEngine()
-    state = ConversationState(
-        session_id="test-session",
-        flow_state="servicio_medico_menu",
-    )
-
-    result = engine.next_step(state=state, user_input="asdf")
-
-    assert result.flow_state == "servicio_medico_menu"
-    assert result.reply_text == FALLBACK_MODULE_MENU
-
-
 def test_flow_engine_routes_from_main_menu_to_soporte() -> None:
     engine = FlowEngine()
     state = ConversationState(
@@ -233,45 +232,6 @@ def test_flow_engine_returns_soporte_response(
 
     assert result.flow_state == "soporte_menu"
     assert result.reply_text == ACCESO_RESPUESTA
-
-
-def test_flow_engine_returns_soporte_fallback() -> None:
-    engine = FlowEngine()
-    state = ConversationState(
-        session_id="test-session",
-        flow_state="soporte_menu",
-    )
-
-    result = engine.next_step(state=state, user_input="asdf")
-
-    assert result.flow_state == "soporte_menu"
-    assert result.reply_text == FALLBACK_MODULE_MENU
-
-
-def test_flow_engine_returns_busquedas_internas_fallback() -> None:
-    engine = FlowEngine()
-    state = ConversationState(
-        session_id="test-session",
-        flow_state="busquedas_internas_menu",
-    )
-
-    result = engine.next_step(state=state, user_input="asdf")
-
-    assert result.flow_state == "busquedas_internas_menu"
-    assert result.reply_text == FALLBACK_MODULE_MENU
-
-
-def test_flow_engine_returns_justificar_licencias_fallback() -> None:
-    engine = FlowEngine()
-    state = ConversationState(
-        session_id="test-session",
-        flow_state="justificar_licencias_menu",
-    )
-
-    result = engine.next_step(state=state, user_input="asdf")
-
-    assert result.flow_state == "justificar_licencias_menu"
-    assert result.reply_text == FALLBACK_MODULE_MENU
 
 
 def test_flow_engine_returns_main_menu_fallback() -> None:
