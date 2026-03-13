@@ -32,3 +32,32 @@ def test_chat_routes_to_administracion_personal_menu() -> None:
     assert payload["flow_state"] == "administracion_personal_menu"
     assert payload["reply"]["content"] == ADMINISTRACION_PERSONAL_MENU
 
+
+def test_chat_routes_conversational_flow_to_justificar_vacaciones() -> None:
+    response = client.post(
+        "/chat",
+        json={"session_id": "api-flow-test", "message": "administracion"},
+    )
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["flow_state"] == "administracion_personal_menu"
+
+    response = client.post(
+        "/chat",
+        json={"session_id": "api-flow-test", "message": "justificar"},
+    )
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["flow_state"] == "justificar_licencias_menu"
+
+    response = client.post(
+        "/chat",
+        json={"session_id": "api-flow-test", "message": "vacaciones"},
+    )
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["flow_state"] == "justificar_vacaciones"
+
