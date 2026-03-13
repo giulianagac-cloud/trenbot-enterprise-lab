@@ -222,6 +222,19 @@ def test_flow_engine_returns_soporte_response(
     assert result.reply_text == ACCESO_RESPUESTA
 
 
+def test_flow_engine_returns_soporte_fallback() -> None:
+    engine = FlowEngine()
+    state = ConversationState(
+        session_id="test-session",
+        flow_state="soporte_menu",
+    )
+
+    result = engine.next_step(state=state, user_input="asdf")
+
+    assert result.flow_state == "soporte_menu"
+    assert result.reply_text == FALLBACK_MODULE_MENU
+
+
 def test_flow_engine_returns_main_menu_fallback() -> None:
     engine = FlowEngine()
     state = ConversationState(
