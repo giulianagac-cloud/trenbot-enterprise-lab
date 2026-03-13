@@ -65,6 +65,30 @@ def test_flow_engine_returns_module_fallback_from_administracion_personal_menu()
     assert result.reply_text == FALLBACK_MODULE_MENU
 
 
+@pytest.mark.parametrize(
+    "user_input",
+    [
+        "volver",
+        "menu",
+        "menú",
+        "inicio",
+    ],
+)
+def test_flow_engine_returns_to_main_menu_from_administracion_personal_menu_aliases(
+    user_input: str,
+) -> None:
+    engine = FlowEngine()
+    state = ConversationState(
+        session_id="test-session",
+        flow_state="administracion_personal_menu",
+    )
+
+    result = engine.next_step(state=state, user_input=user_input)
+
+    assert result.flow_state == "main_menu"
+    assert result.reply_text == VOLVER_MENU_PRINCIPAL
+
+
 def test_flow_engine_routes_to_licencias_disponibles_with_reply_text() -> None:
     engine = FlowEngine()
     state = ConversationState(
