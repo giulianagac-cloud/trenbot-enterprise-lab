@@ -1,6 +1,6 @@
 import pytest
 
-from app.core.messages import VOLVER_MENU_PRINCIPAL
+from app.core.messages import FALLBACK_MODULE_MENU, VOLVER_MENU_PRINCIPAL
 from app.domain.conversation import ConversationState
 from app.services.flow_engine import FlowEngine
 
@@ -37,3 +37,16 @@ def test_flow_engine_returns_to_main_menu_from_licencias_disponibles() -> None:
 
     assert result.flow_state == "main_menu"
     assert result.reply_text == VOLVER_MENU_PRINCIPAL
+
+
+def test_flow_engine_returns_module_fallback_from_administracion_personal_menu() -> None:
+    engine = FlowEngine()
+    state = ConversationState(
+        session_id="test-session",
+        flow_state="administracion_personal_menu",
+    )
+
+    result = engine.next_step(state=state, user_input="asdf")
+
+    assert result.flow_state == "administracion_personal_menu"
+    assert result.reply_text == FALLBACK_MODULE_MENU
