@@ -127,3 +127,25 @@ def test_flow_engine_returns_main_menu_fallback() -> None:
 
     assert result.flow_state == "main_menu"
     assert result.reply_text == FALLBACK_MAIN_MENU
+
+
+@pytest.mark.parametrize(
+    ("user_input", "expected_flow_state"),
+    [
+        ("a", "justificar_vacaciones"),
+        ("examen", "justificar_examen"),
+        ("mudanza", "justificar_mudanza"),
+    ],
+)
+def test_flow_engine_routes_from_justificar_licencias_menu(
+    user_input: str, expected_flow_state: str
+) -> None:
+    engine = FlowEngine()
+    state = ConversationState(
+        session_id="test-session",
+        flow_state="justificar_licencias_menu",
+    )
+
+    result = engine.next_step(state=state, user_input=user_input)
+
+    assert result.flow_state == expected_flow_state
