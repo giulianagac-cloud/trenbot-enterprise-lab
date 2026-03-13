@@ -23,6 +23,11 @@ ACCESO_RESPUESTA = (
     "Podés informar problemas de acceso, uso de la app o consultas de soporte interno."
 )
 
+FALLBACK_MAIN_MENU = (
+    "TrenBot Enterprise puede asistirte en los siguientes módulos: "
+    "Administración de Personal, Búsquedas Internas, Servicio Médico y Soporte."
+)
+
 VOLVER_MENU_PRINCIPAL = "Volviste al menú principal."
 
 ADMINISTRACION_PERSONAL_MENU = "Ingresaste a Administración de Personal. Podés elegir: Licencias disponibles o Justificar licencias."

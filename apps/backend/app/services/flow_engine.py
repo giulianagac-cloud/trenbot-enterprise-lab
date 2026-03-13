@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from app.core.messages import ACCESO_RESPUESTA, ADMINISTRACION_PERSONAL_MENU, BUSQUEDAS_MENU, CERTIFICADO_RESPUESTA, EXAMEN_RESPUESTA, LICENCIAS_DISPONIBLES_RESPUESTA, LICENCIAS_MENU, MUDANZA_RESPUESTA, SERVICIO_MEDICO_MENU, SOPORTE_MENU, VACACIONES_RESPUESTA, VACANTES_RESPUESTA, VOLVER_MENU_PRINCIPAL
+from app.core.messages import ACCESO_RESPUESTA, ADMINISTRACION_PERSONAL_MENU, BUSQUEDAS_MENU, CERTIFICADO_RESPUESTA, EXAMEN_RESPUESTA, FALLBACK_MAIN_MENU, LICENCIAS_DISPONIBLES_RESPUESTA, LICENCIAS_MENU, MUDANZA_RESPUESTA, SERVICIO_MEDICO_MENU, SOPORTE_MENU, VACACIONES_RESPUESTA, VACANTES_RESPUESTA, VOLVER_MENU_PRINCIPAL
 from app.domain.conversation import ConversationState
 
 
@@ -195,8 +195,7 @@ class FlowEngine:
         return FlowResult(
             flow_state=state.flow_state,
             reply_text=(
-                "TrenBot Enterprise puede asistirte en los siguientes módulos: Administración de Personal, "
-                "Búsquedas Internas, Servicio Médico y Soporte."
+                FALLBACK_MAIN_MENU
                 if state.flow_state == "main_menu"
                 else "Podés continuar dentro del módulo actual o volver al menú principal."
             ),
