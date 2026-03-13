@@ -1,6 +1,6 @@
 from fastapi.testclient import TestClient
 
-from app.core.messages import ADMINISTRACION_PERSONAL_MENU, VOLVER_MENU_PRINCIPAL
+from app.core.messages import ADMINISTRACION_PERSONAL_MENU, VACANTES_RESPUESTA, VOLVER_MENU_PRINCIPAL
 from app.main import app
 
 
@@ -81,4 +81,25 @@ def test_chat_routes_back_to_main_menu_with_volver() -> None:
     payload = response.json()
     assert payload["flow_state"] == "main_menu"
     assert payload["reply"]["content"] == VOLVER_MENU_PRINCIPAL
+
+
+def test_chat_routes_conversational_flow_to_busquedas_internas() -> None:
+    response = client.post(
+        "/chat",
+        json={"session_id": "api-busquedas-test", "message": "busquedas"},
+    )
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["flow_state"] == "busquedas_internas_menu"
+
+    response = client.post(
+        "/chat",
+        json={"session_id": "api-busquedas-test", "message": "vacantes"},
+    )
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["flow_state"] == "busquedas_internas_menu"
+    assert payload["reply"]["content"] == VACANTES_RESPUESTA
 
