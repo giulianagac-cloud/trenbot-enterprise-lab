@@ -250,6 +250,24 @@ def test_flow_engine_routes_conversational_flow_to_licencias_disponibles() -> No
     assert step_2.flow_state == "licencias_disponibles"
 
 
+def test_flow_engine_routes_conversational_flow_to_soporte() -> None:
+    engine = FlowEngine()
+    state = ConversationState(
+        session_id="test-session",
+        flow_state="main_menu",
+    )
+
+    step_1 = engine.next_step(state=state, user_input="soporte")
+    assert step_1.flow_state == "soporte_menu"
+
+    state = ConversationState(
+        session_id="test-session",
+        flow_state=step_1.flow_state,
+    )
+    step_2 = engine.next_step(state=state, user_input="acceso")
+    assert step_2.flow_state == "soporte_menu"
+
+
 @pytest.mark.parametrize(
     ("user_input", "expected_flow_state"),
     [
