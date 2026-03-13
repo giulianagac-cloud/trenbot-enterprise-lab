@@ -185,6 +185,19 @@ def test_flow_engine_returns_servicio_medico_response(
     assert result.reply_text == CERTIFICADO_RESPUESTA
 
 
+def test_flow_engine_returns_servicio_medico_fallback() -> None:
+    engine = FlowEngine()
+    state = ConversationState(
+        session_id="test-session",
+        flow_state="servicio_medico_menu",
+    )
+
+    result = engine.next_step(state=state, user_input="asdf")
+
+    assert result.flow_state == "servicio_medico_menu"
+    assert result.reply_text == FALLBACK_MODULE_MENU
+
+
 def test_flow_engine_routes_from_main_menu_to_soporte() -> None:
     engine = FlowEngine()
     state = ConversationState(
