@@ -1,6 +1,6 @@
 import pytest
 
-from app.core.messages import ADMINISTRACION_PERSONAL_MENU, BUSQUEDAS_MENU, CERTIFICADO_RESPUESTA, FALLBACK_MAIN_MENU, FALLBACK_MODULE_MENU, LICENCIAS_DISPONIBLES_RESPUESTA, SERVICIO_MEDICO_MENU, SOPORTE_MENU, VOLVER_MENU_PRINCIPAL
+from app.core.messages import ACCESO_RESPUESTA, ADMINISTRACION_PERSONAL_MENU, BUSQUEDAS_MENU, CERTIFICADO_RESPUESTA, FALLBACK_MAIN_MENU, FALLBACK_MODULE_MENU, LICENCIAS_DISPONIBLES_RESPUESTA, SERVICIO_MEDICO_MENU, SOPORTE_MENU, VOLVER_MENU_PRINCIPAL
 from app.domain.conversation import ConversationState
 from app.services.flow_engine import FlowEngine
 
@@ -196,6 +196,30 @@ def test_flow_engine_routes_from_main_menu_to_soporte() -> None:
 
     assert result.flow_state == "soporte_menu"
     assert result.reply_text == SOPORTE_MENU
+
+
+@pytest.mark.parametrize(
+    "user_input",
+    [
+        "soporte",
+        "acceso",
+        "problema",
+        "app",
+    ],
+)
+def test_flow_engine_returns_soporte_response(
+    user_input: str,
+) -> None:
+    engine = FlowEngine()
+    state = ConversationState(
+        session_id="test-session",
+        flow_state="soporte_menu",
+    )
+
+    result = engine.next_step(state=state, user_input=user_input)
+
+    assert result.flow_state == "soporte_menu"
+    assert result.reply_text == ACCESO_RESPUESTA
 
 
 def test_flow_engine_returns_main_menu_fallback() -> None:
