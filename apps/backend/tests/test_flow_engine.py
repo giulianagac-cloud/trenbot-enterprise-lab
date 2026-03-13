@@ -207,6 +207,31 @@ def test_flow_engine_returns_main_menu_fallback() -> None:
     assert result.reply_text == FALLBACK_MAIN_MENU
 
 
+def test_flow_engine_routes_conversational_flow_to_justificar_vacaciones() -> None:
+    engine = FlowEngine()
+    state = ConversationState(
+        session_id="test-session",
+        flow_state="main_menu",
+    )
+
+    step_1 = engine.next_step(state=state, user_input="administracion")
+    assert step_1.flow_state == "administracion_personal_menu"
+
+    state = ConversationState(
+        session_id="test-session",
+        flow_state=step_1.flow_state,
+    )
+    step_2 = engine.next_step(state=state, user_input="justificar")
+    assert step_2.flow_state == "justificar_licencias_menu"
+
+    state = ConversationState(
+        session_id="test-session",
+        flow_state=step_2.flow_state,
+    )
+    step_3 = engine.next_step(state=state, user_input="vacaciones")
+    assert step_3.flow_state == "justificar_vacaciones"
+
+
 @pytest.mark.parametrize(
     ("user_input", "expected_flow_state"),
     [
