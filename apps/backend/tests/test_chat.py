@@ -124,3 +124,24 @@ def test_chat_returns_module_fallback_within_soporte() -> None:
     assert payload["flow_state"] == "soporte_menu"
     assert payload["reply"]["content"] == FALLBACK_MODULE_MENU
 
+
+def test_chat_returns_module_fallback_within_servicio_medico() -> None:
+    response = client.post(
+        "/chat",
+        json={"session_id": "api-medico-fallback-test", "message": "medico"},
+    )
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["flow_state"] == "servicio_medico_menu"
+
+    response = client.post(
+        "/chat",
+        json={"session_id": "api-medico-fallback-test", "message": "asdf"},
+    )
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["flow_state"] == "servicio_medico_menu"
+    assert payload["reply"]["content"] == FALLBACK_MODULE_MENU
+
