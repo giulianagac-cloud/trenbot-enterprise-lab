@@ -166,3 +166,33 @@ def test_chat_returns_module_fallback_within_busquedas_internas() -> None:
     assert payload["flow_state"] == "busquedas_internas_menu"
     assert payload["reply"]["content"] == FALLBACK_MODULE_MENU
 
+
+def test_chat_returns_module_fallback_within_justificar_licencias() -> None:
+    response = client.post(
+        "/chat",
+        json={"session_id": "api-justificar-fallback-test", "message": "administracion"},
+    )
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["flow_state"] == "administracion_personal_menu"
+
+    response = client.post(
+        "/chat",
+        json={"session_id": "api-justificar-fallback-test", "message": "justificar"},
+    )
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["flow_state"] == "justificar_licencias_menu"
+
+    response = client.post(
+        "/chat",
+        json={"session_id": "api-justificar-fallback-test", "message": "asdf"},
+    )
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["flow_state"] == "justificar_licencias_menu"
+    assert payload["reply"]["content"] == FALLBACK_MODULE_MENU
+
