@@ -286,6 +286,24 @@ def test_flow_engine_routes_conversational_flow_to_servicio_medico() -> None:
     assert step_2.flow_state == "servicio_medico_menu"
 
 
+def test_flow_engine_routes_conversational_flow_to_busquedas_internas() -> None:
+    engine = FlowEngine()
+    state = ConversationState(
+        session_id="test-session",
+        flow_state="main_menu",
+    )
+
+    step_1 = engine.next_step(state=state, user_input="busquedas")
+    assert step_1.flow_state == "busquedas_internas_menu"
+
+    state = ConversationState(
+        session_id="test-session",
+        flow_state=step_1.flow_state,
+    )
+    step_2 = engine.next_step(state=state, user_input="vacantes")
+    assert step_2.flow_state == "busquedas_internas_menu"
+
+
 @pytest.mark.parametrize(
     ("user_input", "expected_flow_state"),
     [
