@@ -28,6 +28,8 @@ FALLBACK_MAIN_MENU = (
     "Administración de Personal, Búsquedas Internas, Servicio Médico y Soporte."
 )
 
+FALLBACK_MODULE_MENU = "Podés continuar dentro del módulo actual o volver al menú principal."
+
 VOLVER_MENU_PRINCIPAL = "Volviste al menú principal."
 
 ADMINISTRACION_PERSONAL_MENU = "Ingresaste a Administración de Personal. Podés elegir: Licencias disponibles o Justificar licencias."
