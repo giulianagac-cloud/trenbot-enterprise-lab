@@ -44,7 +44,7 @@ class FlowEngine:
                     reply_text=BUSQUEDAS_MENU,
                 )
 
-            if any(word in normalized for word in ("medico", "servicio medico")):
+            if any(word in normalized for word in ("medico", "médico", "servicio medico")):
                 return FlowResult(
                     flow_state="servicio_medico_menu",
                     reply_text=SERVICIO_MEDICO_MENU,
