@@ -115,17 +115,25 @@ def test_flow_engine_routes_to_licencias_disponibles_with_reply_text() -> None:
 
 
 @pytest.mark.parametrize(
-    "user_input",
+    ("user_input", "expected_flow_state", "expected_reply_text"),
     [
-        "administracion",
-        "admin",
-        "adm personal",
-        "personal",
-        "licencias",
+        ("administracion", "administracion_personal_menu", ADMINISTRACION_PERSONAL_MENU),
+        ("admin", "administracion_personal_menu", ADMINISTRACION_PERSONAL_MENU),
+        ("adm personal", "administracion_personal_menu", ADMINISTRACION_PERSONAL_MENU),
+        ("personal", "administracion_personal_menu", ADMINISTRACION_PERSONAL_MENU),
+        ("licencias", "administracion_personal_menu", ADMINISTRACION_PERSONAL_MENU),
+        ("busquedas", "busquedas_internas_menu", BUSQUEDAS_MENU),
+        ("busqueda", "busquedas_internas_menu", BUSQUEDAS_MENU),
+        ("medico", "servicio_medico_menu", SERVICIO_MEDICO_MENU),
+        ("médico", "servicio_medico_menu", SERVICIO_MEDICO_MENU),
+        ("servicio medico", "servicio_medico_menu", SERVICIO_MEDICO_MENU),
+        ("soporte", "soporte_menu", SOPORTE_MENU),
     ],
 )
-def test_flow_engine_routes_from_main_menu_to_administracion_personal(
+def test_flow_engine_routes_from_main_menu(
     user_input: str,
+    expected_flow_state: str,
+    expected_reply_text: str,
 ) -> None:
     engine = FlowEngine()
     state = ConversationState(
@@ -135,43 +143,8 @@ def test_flow_engine_routes_from_main_menu_to_administracion_personal(
 
     result = engine.next_step(state=state, user_input=user_input)
 
-    assert result.flow_state == "administracion_personal_menu"
-    assert result.reply_text == ADMINISTRACION_PERSONAL_MENU
-
-
-@pytest.mark.parametrize(
-    "user_input",
-    [
-        "busquedas",
-        "busqueda",
-    ],
-)
-def test_flow_engine_routes_from_main_menu_to_busquedas_internas(
-    user_input: str,
-) -> None:
-    engine = FlowEngine()
-    state = ConversationState(
-        session_id="test-session",
-        flow_state="main_menu",
-    )
-
-    result = engine.next_step(state=state, user_input=user_input)
-
-    assert result.flow_state == "busquedas_internas_menu"
-    assert result.reply_text == BUSQUEDAS_MENU
-
-
-def test_flow_engine_routes_from_main_menu_to_servicio_medico() -> None:
-    engine = FlowEngine()
-    state = ConversationState(
-        session_id="test-session",
-        flow_state="main_menu",
-    )
-
-    result = engine.next_step(state=state, user_input="medico")
-
-    assert result.flow_state == "servicio_medico_menu"
-    assert result.reply_text == SERVICIO_MEDICO_MENU
+    assert result.flow_state == expected_flow_state
+    assert result.reply_text == expected_reply_text
 
 
 @pytest.mark.parametrize(
@@ -195,19 +168,6 @@ def test_flow_engine_returns_servicio_medico_response(
 
     assert result.flow_state == "servicio_medico_menu"
     assert result.reply_text == CERTIFICADO_RESPUESTA
-
-
-def test_flow_engine_routes_from_main_menu_to_soporte() -> None:
-    engine = FlowEngine()
-    state = ConversationState(
-        session_id="test-session",
-        flow_state="main_menu",
-    )
-
-    result = engine.next_step(state=state, user_input="soporte")
-
-    assert result.flow_state == "soporte_menu"
-    assert result.reply_text == SOPORTE_MENU
 
 
 @pytest.mark.parametrize(
