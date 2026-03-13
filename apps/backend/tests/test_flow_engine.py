@@ -232,6 +232,24 @@ def test_flow_engine_routes_conversational_flow_to_justificar_vacaciones() -> No
     assert step_3.flow_state == "justificar_vacaciones"
 
 
+def test_flow_engine_routes_conversational_flow_to_licencias_disponibles() -> None:
+    engine = FlowEngine()
+    state = ConversationState(
+        session_id="test-session",
+        flow_state="main_menu",
+    )
+
+    step_1 = engine.next_step(state=state, user_input="administracion")
+    assert step_1.flow_state == "administracion_personal_menu"
+
+    state = ConversationState(
+        session_id="test-session",
+        flow_state=step_1.flow_state,
+    )
+    step_2 = engine.next_step(state=state, user_input="disponibles")
+    assert step_2.flow_state == "licencias_disponibles"
+
+
 @pytest.mark.parametrize(
     ("user_input", "expected_flow_state"),
     [
