@@ -101,6 +101,37 @@ def test_flow_engine_returns_to_main_menu_from_administracion_personal_menu_alia
     assert result.reply_text == VOLVER_MENU_PRINCIPAL
 
 
+@pytest.mark.parametrize(
+    "initial_flow_state",
+    [
+        "soporte_menu",
+        "servicio_medico_menu",
+        "busquedas_internas_menu",
+    ],
+)
+@pytest.mark.parametrize(
+    "user_input",
+    [
+        "menu",
+        "men\u00fa",
+    ],
+)
+def test_flow_engine_returns_to_main_menu_from_submenu_aliases(
+    initial_flow_state: str,
+    user_input: str,
+) -> None:
+    engine = FlowEngine()
+    state = ConversationState(
+        session_id="test-session",
+        flow_state=initial_flow_state,
+    )
+
+    result = engine.next_step(state=state, user_input=user_input)
+
+    assert result.flow_state == "main_menu"
+    assert result.reply_text == VOLVER_MENU_PRINCIPAL
+
+
 def test_flow_engine_routes_to_licencias_disponibles_with_reply_text() -> None:
     engine = FlowEngine()
     state = ConversationState(
