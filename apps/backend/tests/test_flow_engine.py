@@ -248,6 +248,19 @@ def test_flow_engine_returns_soporte_fallback() -> None:
     assert result.reply_text == FALLBACK_MODULE_MENU
 
 
+def test_flow_engine_returns_busquedas_internas_fallback() -> None:
+    engine = FlowEngine()
+    state = ConversationState(
+        session_id="test-session",
+        flow_state="busquedas_internas_menu",
+    )
+
+    result = engine.next_step(state=state, user_input="asdf")
+
+    assert result.flow_state == "busquedas_internas_menu"
+    assert result.reply_text == FALLBACK_MODULE_MENU
+
+
 def test_flow_engine_returns_main_menu_fallback() -> None:
     engine = FlowEngine()
     state = ConversationState(
