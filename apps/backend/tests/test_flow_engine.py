@@ -127,14 +127,23 @@ def test_flow_engine_routes_from_main_menu_to_administracion_personal(
     assert result.reply_text == ADMINISTRACION_PERSONAL_MENU
 
 
-def test_flow_engine_routes_from_main_menu_to_busquedas_internas() -> None:
+@pytest.mark.parametrize(
+    "user_input",
+    [
+        "busquedas",
+        "busqueda",
+    ],
+)
+def test_flow_engine_routes_from_main_menu_to_busquedas_internas(
+    user_input: str,
+) -> None:
     engine = FlowEngine()
     state = ConversationState(
         session_id="test-session",
         flow_state="main_menu",
     )
 
-    result = engine.next_step(state=state, user_input="busquedas")
+    result = engine.next_step(state=state, user_input=user_input)
 
     assert result.flow_state == "busquedas_internas_menu"
     assert result.reply_text == BUSQUEDAS_MENU
