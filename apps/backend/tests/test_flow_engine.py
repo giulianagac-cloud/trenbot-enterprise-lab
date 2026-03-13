@@ -1,6 +1,6 @@
 import pytest
 
-from app.core.messages import ADMINISTRACION_PERSONAL_MENU, BUSQUEDAS_MENU, FALLBACK_MAIN_MENU, FALLBACK_MODULE_MENU, SERVICIO_MEDICO_MENU, SOPORTE_MENU, VOLVER_MENU_PRINCIPAL
+from app.core.messages import ADMINISTRACION_PERSONAL_MENU, BUSQUEDAS_MENU, FALLBACK_MAIN_MENU, FALLBACK_MODULE_MENU, LICENCIAS_DISPONIBLES_RESPUESTA, SERVICIO_MEDICO_MENU, SOPORTE_MENU, VOLVER_MENU_PRINCIPAL
 from app.domain.conversation import ConversationState
 from app.services.flow_engine import FlowEngine
 
@@ -50,6 +50,19 @@ def test_flow_engine_returns_module_fallback_from_administracion_personal_menu()
 
     assert result.flow_state == "administracion_personal_menu"
     assert result.reply_text == FALLBACK_MODULE_MENU
+
+
+def test_flow_engine_routes_to_licencias_disponibles_with_reply_text() -> None:
+    engine = FlowEngine()
+    state = ConversationState(
+        session_id="test-session",
+        flow_state="administracion_personal_menu",
+    )
+
+    result = engine.next_step(state=state, user_input="disponibles")
+
+    assert result.flow_state == "licencias_disponibles"
+    assert result.reply_text == LICENCIAS_DISPONIBLES_RESPUESTA
 
 
 @pytest.mark.parametrize(
