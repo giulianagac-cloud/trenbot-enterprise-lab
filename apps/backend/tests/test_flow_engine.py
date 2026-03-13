@@ -1,6 +1,6 @@
 import pytest
 
-from app.core.messages import ADMINISTRACION_PERSONAL_MENU, BUSQUEDAS_MENU, FALLBACK_MAIN_MENU, FALLBACK_MODULE_MENU, LICENCIAS_DISPONIBLES_RESPUESTA, SERVICIO_MEDICO_MENU, SOPORTE_MENU, VOLVER_MENU_PRINCIPAL
+from app.core.messages import ADMINISTRACION_PERSONAL_MENU, BUSQUEDAS_MENU, CERTIFICADO_RESPUESTA, FALLBACK_MAIN_MENU, FALLBACK_MODULE_MENU, LICENCIAS_DISPONIBLES_RESPUESTA, SERVICIO_MEDICO_MENU, SOPORTE_MENU, VOLVER_MENU_PRINCIPAL
 from app.domain.conversation import ConversationState
 from app.services.flow_engine import FlowEngine
 
@@ -160,6 +160,29 @@ def test_flow_engine_routes_from_main_menu_to_servicio_medico() -> None:
 
     assert result.flow_state == "servicio_medico_menu"
     assert result.reply_text == SERVICIO_MEDICO_MENU
+
+
+@pytest.mark.parametrize(
+    "user_input",
+    [
+        "turno",
+        "medico",
+        "certificado",
+    ],
+)
+def test_flow_engine_returns_servicio_medico_response(
+    user_input: str,
+) -> None:
+    engine = FlowEngine()
+    state = ConversationState(
+        session_id="test-session",
+        flow_state="servicio_medico_menu",
+    )
+
+    result = engine.next_step(state=state, user_input=user_input)
+
+    assert result.flow_state == "servicio_medico_menu"
+    assert result.reply_text == CERTIFICADO_RESPUESTA
 
 
 def test_flow_engine_routes_from_main_menu_to_soporte() -> None:
