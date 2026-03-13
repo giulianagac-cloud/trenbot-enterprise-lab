@@ -250,6 +250,24 @@ def test_flow_engine_routes_conversational_flow_to_licencias_disponibles() -> No
     assert step_2.flow_state == "licencias_disponibles"
 
 
+def test_flow_engine_routes_conversational_flow_to_licencias_disponibles_from_admin_alias() -> None:
+    engine = FlowEngine()
+    state = ConversationState(
+        session_id="test-session",
+        flow_state="main_menu",
+    )
+
+    step_1 = engine.next_step(state=state, user_input="admin")
+    assert step_1.flow_state == "administracion_personal_menu"
+
+    state = ConversationState(
+        session_id="test-session",
+        flow_state=step_1.flow_state,
+    )
+    step_2 = engine.next_step(state=state, user_input="disponibles")
+    assert step_2.flow_state == "licencias_disponibles"
+
+
 def test_flow_engine_routes_conversational_flow_to_soporte() -> None:
     engine = FlowEngine()
     state = ConversationState(
