@@ -1,6 +1,6 @@
 from fastapi.testclient import TestClient
 
-from app.core.messages import ADMINISTRACION_PERSONAL_MENU, VACANTES_RESPUESTA, VOLVER_MENU_PRINCIPAL
+from app.core.messages import ADMINISTRACION_PERSONAL_MENU, FALLBACK_MODULE_MENU, VACANTES_RESPUESTA, VOLVER_MENU_PRINCIPAL
 from app.main import app
 
 
@@ -102,4 +102,25 @@ def test_chat_routes_conversational_flow_to_busquedas_internas() -> None:
     payload = response.json()
     assert payload["flow_state"] == "busquedas_internas_menu"
     assert payload["reply"]["content"] == VACANTES_RESPUESTA
+
+
+def test_chat_returns_module_fallback_within_soporte() -> None:
+    response = client.post(
+        "/chat",
+        json={"session_id": "api-soporte-fallback-test", "message": "soporte"},
+    )
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["flow_state"] == "soporte_menu"
+
+    response = client.post(
+        "/chat",
+        json={"session_id": "api-soporte-fallback-test", "message": "asdf"},
+    )
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["flow_state"] == "soporte_menu"
+    assert payload["reply"]["content"] == FALLBACK_MODULE_MENU
 
