@@ -1,6 +1,6 @@
 from fastapi.testclient import TestClient
 
-from app.core.messages import ADMINISTRACION_PERSONAL_MENU
+from app.core.messages import ADMINISTRACION_PERSONAL_MENU, VOLVER_MENU_PRINCIPAL
 from app.main import app
 
 
@@ -60,4 +60,25 @@ def test_chat_routes_conversational_flow_to_justificar_vacaciones() -> None:
     assert response.status_code == 200
     payload = response.json()
     assert payload["flow_state"] == "justificar_vacaciones"
+
+
+def test_chat_routes_back_to_main_menu_with_volver() -> None:
+    response = client.post(
+        "/chat",
+        json={"session_id": "api-volver-test", "message": "administracion"},
+    )
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["flow_state"] == "administracion_personal_menu"
+
+    response = client.post(
+        "/chat",
+        json={"session_id": "api-volver-test", "message": "volver"},
+    )
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["flow_state"] == "main_menu"
+    assert payload["reply"]["content"] == VOLVER_MENU_PRINCIPAL
 
