@@ -1,6 +1,6 @@
 from fastapi.testclient import TestClient
 
-from app.core.messages import ADMINISTRACION_PERSONAL_MENU, FALLBACK_MODULE_MENU, VACANTES_RESPUESTA, VOLVER_MENU_PRINCIPAL
+from app.core.messages import ADMINISTRACION_PERSONAL_MENU, FALLBACK_MODULE_MENU, LICENCIAS_DISPONIBLES_RESPUESTA, VACANTES_RESPUESTA, VOLVER_MENU_PRINCIPAL
 from app.main import app
 
 
@@ -195,4 +195,25 @@ def test_chat_returns_module_fallback_within_justificar_licencias() -> None:
     payload = response.json()
     assert payload["flow_state"] == "justificar_licencias_menu"
     assert payload["reply"]["content"] == FALLBACK_MODULE_MENU
+
+
+def test_chat_routes_conversational_flow_to_licencias_disponibles() -> None:
+    response = client.post(
+        "/chat",
+        json={"session_id": "api-licencias-disponibles-test", "message": "administracion"},
+    )
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["flow_state"] == "administracion_personal_menu"
+
+    response = client.post(
+        "/chat",
+        json={"session_id": "api-licencias-disponibles-test", "message": "disponibles"},
+    )
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["flow_state"] == "licencias_disponibles"
+    assert payload["reply"]["content"] == LICENCIAS_DISPONIBLES_RESPUESTA
 
