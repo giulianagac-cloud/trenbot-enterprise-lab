@@ -109,13 +109,19 @@ class FlowEngine:
     ) -> FlowResult | None:
         # Submenú Administración de Personal
         if state.flow_state == "administracion_personal_menu":
+            if "justificar" in normalized:
+                return FlowResult(
+                    flow_state="justificar_licencias_menu",
+                    reply_text=LICENCIAS_MENU,
+                )
+
             if any(word in normalized for word in ("licencias disponibles", "disponibles", "vacaciones", "dias", "saldo")):
                 return FlowResult(
                     flow_state="licencias_disponibles",
                     reply_text=LICENCIAS_DISPONIBLES_RESPUESTA,
                 )
 
-            if any(word in normalized for word in ("justificar", "licencia", "justificar licencia")):
+            if any(word in normalized for word in ("licencia", "justificar licencia")):
                 return FlowResult(
                     flow_state="justificar_licencias_menu",
                     reply_text=LICENCIAS_MENU,
@@ -128,19 +134,28 @@ class FlowEngine:
     ) -> FlowResult | None:
         # Menú Justificar Licencias
         if state.flow_state == "justificar_licencias_menu":
-            if normalized in ("a", "a.") or any(word in normalized for word in ("vacaciones", "vacacion")):
+            if normalized in ("a", "a.") or any(
+                word in normalized
+                for word in ("vacaciones", "vacacion", "descanso", "licencia anual")
+            ):
                 return FlowResult(
                     flow_state="justificar_vacaciones",
                     reply_text=VACACIONES_RESPUESTA,
                 )
 
-            if normalized in ("b", "b.") or any(word in normalized for word in ("examen", "examenes")):
+            if normalized in ("b", "b.") or any(
+                word in normalized
+                for word in ("examen", "examenes", "rendir", "rendi", "final")
+            ):
                 return FlowResult(
                     flow_state="justificar_examen",
                     reply_text=EXAMEN_RESPUESTA,
                 )
 
-            if normalized in ("c", "c.") or any(word in normalized for word in ("mudanza",)):
+            if normalized in ("c", "c.") or any(
+                word in normalized
+                for word in ("mudanza", "me mude", "domicilio")
+            ):
                 return FlowResult(
                     flow_state="justificar_mudanza",
                     reply_text=MUDANZA_RESPUESTA,
