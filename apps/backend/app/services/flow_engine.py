@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+import unicodedata
 
 from app.core.messages import (
     ACCESO_RESPUESTA,
@@ -27,6 +28,12 @@ class FlowResult:
 
 
 class FlowEngine:
+    def _normalize_user_input(self, user_input: str) -> str:
+        normalized = unicodedata.normalize("NFD", user_input.lower().strip())
+        return "".join(
+            character for character in normalized if not unicodedata.combining(character)
+        )
+
     def _handle_main_menu(
         self, state: ConversationState, normalized: str
     ) -> FlowResult | None:
@@ -142,7 +149,7 @@ class FlowEngine:
         return None
 
     def next_step(self, state: ConversationState, user_input: str) -> FlowResult:
-        normalized = user_input.lower().strip()
+        normalized = self._normalize_user_input(user_input)
         if state.flow_state in (
             "licencias_menu",
             "administracion_personal_menu",
