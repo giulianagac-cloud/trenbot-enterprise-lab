@@ -1,8 +1,9 @@
 LICENCIAS_MENU = "¿Qué licencia querés justificar? Podés elegir: A. Vacaciones, B. Examen, C. Mudanza."
 
 FORMULARIO_VACACIONES_URL = "/static/forms/vacaciones.pdf"
-FORMULARIO_EXAMEN_URL = "<LINK_FORMULARIO_EXAMEN>"
-FORMULARIO_MUDANZA_URL = "<LINK_FORMULARIO_MUDANZA>"
+FORMULARIO_EXAMEN_URL = "/static/forms/examen.pdf"
+FORMULARIO_MUDANZA_URL = "/static/forms/mudanza.pdf"
+FORMULARIO_DDJJ_DOMICILIO_URL = "/static/forms/ddjj_domicilio.pdf"
 
 VACACIONES_RESPUESTA = (
     "Para justificar vacaciones, la solicitud debe realizarse con 25 días de anticipación. "
@@ -50,6 +51,8 @@ EXAMEN_RESPUESTA = (
 )
 
 MUDANZA_RESPUESTA = (
-    "Para justificar licencia por mudanza, debés completar la documentación requerida. "
-    f"Podés descargar el formulario aquí: {FORMULARIO_MUDANZA_URL}"
+    "Para solicitar la licencia por mudanza, debés presentar el formulario de mudanza antes de gozar la licencia. "
+    f"Podés descargarlo aquí: {FORMULARIO_MUDANZA_URL}\n\n"
+    "Al reincorporarte, debés presentar también la DDJJ de nuevo domicilio. "
+    f"Podés descargarla aquí: {FORMULARIO_DDJJ_DOMICILIO_URL}"
 )

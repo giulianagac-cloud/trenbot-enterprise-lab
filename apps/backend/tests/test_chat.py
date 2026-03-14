@@ -51,6 +51,26 @@ def test_chat_routes_conversational_flow_to_justificar_vacaciones() -> None:
     assert payload["flow_state"] == "justificar_vacaciones"
 
 
+def test_chat_routes_conversational_flow_to_justificar_mudanza() -> None:
+    response = _post_chat("api-mudanza-flow-test", "administracion")
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["flow_state"] == "administracion_personal_menu"
+
+    response = _post_chat("api-mudanza-flow-test", "justificar")
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["flow_state"] == "justificar_licencias_menu"
+
+    response = _post_chat("api-mudanza-flow-test", "mudanza")
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["flow_state"] == "justificar_mudanza"
+
+
 def test_chat_routes_back_to_main_menu_with_volver() -> None:
     response = _post_chat("api-volver-test", "administracion")
 
