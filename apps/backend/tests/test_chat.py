@@ -7,11 +7,12 @@ from app.main import app
 client = TestClient(app)
 
 
+def _post_chat(session_id: str, message: str):
+    return client.post("/chat", json={"session_id": session_id, "message": message})
+
+
 def test_chat_returns_guided_leave_response() -> None:
-    response = client.post(
-        "/chat",
-        json={"session_id": "session-1", "message": "I need vacation information"},
-    )
+    response = _post_chat("session-1", "I need vacation information")
 
     assert response.status_code == 200
     payload = response.json()
@@ -21,10 +22,7 @@ def test_chat_returns_guided_leave_response() -> None:
 
 
 def test_chat_routes_to_administracion_personal_menu() -> None:
-    response = client.post(
-        "/chat",
-        json={"session_id": "api-test", "message": "administracion"},
-    )
+    response = _post_chat("api-test", "administracion")
 
     assert response.status_code == 200
     payload = response.json()
@@ -34,28 +32,19 @@ def test_chat_routes_to_administracion_personal_menu() -> None:
 
 
 def test_chat_routes_conversational_flow_to_justificar_vacaciones() -> None:
-    response = client.post(
-        "/chat",
-        json={"session_id": "api-flow-test", "message": "administracion"},
-    )
+    response = _post_chat("api-flow-test", "administracion")
 
     assert response.status_code == 200
     payload = response.json()
     assert payload["flow_state"] == "administracion_personal_menu"
 
-    response = client.post(
-        "/chat",
-        json={"session_id": "api-flow-test", "message": "justificar"},
-    )
+    response = _post_chat("api-flow-test", "justificar")
 
     assert response.status_code == 200
     payload = response.json()
     assert payload["flow_state"] == "justificar_licencias_menu"
 
-    response = client.post(
-        "/chat",
-        json={"session_id": "api-flow-test", "message": "vacaciones"},
-    )
+    response = _post_chat("api-flow-test", "vacaciones")
 
     assert response.status_code == 200
     payload = response.json()
@@ -63,19 +52,13 @@ def test_chat_routes_conversational_flow_to_justificar_vacaciones() -> None:
 
 
 def test_chat_routes_back_to_main_menu_with_volver() -> None:
-    response = client.post(
-        "/chat",
-        json={"session_id": "api-volver-test", "message": "administracion"},
-    )
+    response = _post_chat("api-volver-test", "administracion")
 
     assert response.status_code == 200
     payload = response.json()
     assert payload["flow_state"] == "administracion_personal_menu"
 
-    response = client.post(
-        "/chat",
-        json={"session_id": "api-volver-test", "message": "volver"},
-    )
+    response = _post_chat("api-volver-test", "volver")
 
     assert response.status_code == 200
     payload = response.json()
@@ -84,19 +67,13 @@ def test_chat_routes_back_to_main_menu_with_volver() -> None:
 
 
 def test_chat_routes_conversational_flow_to_busquedas_internas() -> None:
-    response = client.post(
-        "/chat",
-        json={"session_id": "api-busquedas-test", "message": "busquedas"},
-    )
+    response = _post_chat("api-busquedas-test", "busquedas")
 
     assert response.status_code == 200
     payload = response.json()
     assert payload["flow_state"] == "busquedas_internas_menu"
 
-    response = client.post(
-        "/chat",
-        json={"session_id": "api-busquedas-test", "message": "vacantes"},
-    )
+    response = _post_chat("api-busquedas-test", "vacantes")
 
     assert response.status_code == 200
     payload = response.json()
@@ -105,19 +82,13 @@ def test_chat_routes_conversational_flow_to_busquedas_internas() -> None:
 
 
 def test_chat_returns_module_fallback_within_soporte() -> None:
-    response = client.post(
-        "/chat",
-        json={"session_id": "api-soporte-fallback-test", "message": "soporte"},
-    )
+    response = _post_chat("api-soporte-fallback-test", "soporte")
 
     assert response.status_code == 200
     payload = response.json()
     assert payload["flow_state"] == "soporte_menu"
 
-    response = client.post(
-        "/chat",
-        json={"session_id": "api-soporte-fallback-test", "message": "asdf"},
-    )
+    response = _post_chat("api-soporte-fallback-test", "asdf")
 
     assert response.status_code == 200
     payload = response.json()
@@ -126,19 +97,13 @@ def test_chat_returns_module_fallback_within_soporte() -> None:
 
 
 def test_chat_returns_module_fallback_within_servicio_medico() -> None:
-    response = client.post(
-        "/chat",
-        json={"session_id": "api-medico-fallback-test", "message": "medico"},
-    )
+    response = _post_chat("api-medico-fallback-test", "medico")
 
     assert response.status_code == 200
     payload = response.json()
     assert payload["flow_state"] == "servicio_medico_menu"
 
-    response = client.post(
-        "/chat",
-        json={"session_id": "api-medico-fallback-test", "message": "asdf"},
-    )
+    response = _post_chat("api-medico-fallback-test", "asdf")
 
     assert response.status_code == 200
     payload = response.json()
@@ -147,19 +112,13 @@ def test_chat_returns_module_fallback_within_servicio_medico() -> None:
 
 
 def test_chat_returns_module_fallback_within_busquedas_internas() -> None:
-    response = client.post(
-        "/chat",
-        json={"session_id": "api-busquedas-fallback-test", "message": "busquedas"},
-    )
+    response = _post_chat("api-busquedas-fallback-test", "busquedas")
 
     assert response.status_code == 200
     payload = response.json()
     assert payload["flow_state"] == "busquedas_internas_menu"
 
-    response = client.post(
-        "/chat",
-        json={"session_id": "api-busquedas-fallback-test", "message": "asdf"},
-    )
+    response = _post_chat("api-busquedas-fallback-test", "asdf")
 
     assert response.status_code == 200
     payload = response.json()
@@ -168,28 +127,19 @@ def test_chat_returns_module_fallback_within_busquedas_internas() -> None:
 
 
 def test_chat_returns_module_fallback_within_justificar_licencias() -> None:
-    response = client.post(
-        "/chat",
-        json={"session_id": "api-justificar-fallback-test", "message": "administracion"},
-    )
+    response = _post_chat("api-justificar-fallback-test", "administracion")
 
     assert response.status_code == 200
     payload = response.json()
     assert payload["flow_state"] == "administracion_personal_menu"
 
-    response = client.post(
-        "/chat",
-        json={"session_id": "api-justificar-fallback-test", "message": "justificar"},
-    )
+    response = _post_chat("api-justificar-fallback-test", "justificar")
 
     assert response.status_code == 200
     payload = response.json()
     assert payload["flow_state"] == "justificar_licencias_menu"
 
-    response = client.post(
-        "/chat",
-        json={"session_id": "api-justificar-fallback-test", "message": "asdf"},
-    )
+    response = _post_chat("api-justificar-fallback-test", "asdf")
 
     assert response.status_code == 200
     payload = response.json()
@@ -198,19 +148,13 @@ def test_chat_returns_module_fallback_within_justificar_licencias() -> None:
 
 
 def test_chat_routes_conversational_flow_to_licencias_disponibles() -> None:
-    response = client.post(
-        "/chat",
-        json={"session_id": "api-licencias-disponibles-test", "message": "administracion"},
-    )
+    response = _post_chat("api-licencias-disponibles-test", "administracion")
 
     assert response.status_code == 200
     payload = response.json()
     assert payload["flow_state"] == "administracion_personal_menu"
 
-    response = client.post(
-        "/chat",
-        json={"session_id": "api-licencias-disponibles-test", "message": "disponibles"},
-    )
+    response = _post_chat("api-licencias-disponibles-test", "disponibles")
 
     assert response.status_code == 200
     payload = response.json()
