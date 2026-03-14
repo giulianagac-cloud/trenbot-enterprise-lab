@@ -1,8 +1,12 @@
 LICENCIAS_MENU = "¿Qué licencia querés justificar? Podés elegir: A. Vacaciones, B. Examen, C. Mudanza."
 
+FORMULARIO_VACACIONES_URL = "<LINK_FORMULARIO_VACACIONES>"
+FORMULARIO_EXAMEN_URL = "<LINK_FORMULARIO_EXAMEN>"
+FORMULARIO_MUDANZA_URL = "<LINK_FORMULARIO_MUDANZA>"
+
 VACACIONES_RESPUESTA = (
     "Para justificar vacaciones, la solicitud debe realizarse con 25 días de anticipación. "
-    "Podés descargar el formulario correspondiente en el siguiente enlace."
+    f"Podés descargar el formulario correspondiente aquí: {FORMULARIO_VACACIONES_URL}"
 )
 
 BUSQUEDAS_MENU = "Ingresaste al módulo de Búsquedas Internas."
@@ -40,6 +44,12 @@ LICENCIAS_DISPONIBLES_RESPUESTA = (
     "cuántos días de vacaciones tenés disponibles."
 )
 
-EXAMEN_RESPUESTA = "Para justificar licencia por examen, debés presentar el comprobante correspondiente. Podés descargar el formulario en el siguiente enlace."
+EXAMEN_RESPUESTA = (
+    "Para justificar licencia por examen, debés presentar el comprobante correspondiente. "
+    f"Podés descargar el formulario aquí: {FORMULARIO_EXAMEN_URL}"
+)
 
-MUDANZA_RESPUESTA = "Para justificar licencia por mudanza, debés completar la documentación requerida. Podés descargar el formulario en el siguiente enlace."
+MUDANZA_RESPUESTA = (
+    "Para justificar licencia por mudanza, debés completar la documentación requerida. "
+    f"Podés descargar el formulario aquí: {FORMULARIO_MUDANZA_URL}"
+)
