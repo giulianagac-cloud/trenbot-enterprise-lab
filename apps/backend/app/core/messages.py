@@ -1,6 +1,6 @@
 LICENCIAS_MENU = "¿Qué licencia querés justificar? Podés elegir: A. Vacaciones, B. Examen, C. Mudanza."
 
-FORMULARIO_VACACIONES_URL = "<LINK_FORMULARIO_VACACIONES>"
+FORMULARIO_VACACIONES_URL = "/static/forms/vacaciones.pdf"
 FORMULARIO_EXAMEN_URL = "<LINK_FORMULARIO_EXAMEN>"
 FORMULARIO_MUDANZA_URL = "<LINK_FORMULARIO_MUDANZA>"
 
