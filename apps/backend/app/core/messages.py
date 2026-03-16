@@ -16,10 +16,46 @@ VACANTES_RESPUESTA = (
     "Podés consultar búsquedas internas vigentes o futuras oportunidades dentro de la empresa."
 )
 
-SERVICIO_MEDICO_MENU = "Ingresaste al módulo de Servicio Médico."
+SERVICIO_MEDICO_MENU = (
+    "Ingresaste al módulo de Servicio Médico. ¿En qué podemos ayudarte?\n"
+    "A. Aviso de enfermedad\n"
+    "B. Justificar licencia médica\n"
+    "C. Consultar próxima cita"
+)
 
-CERTIFICADO_RESPUESTA = (
-    "Podés consultar turnos, certificados médicos o gestiones vinculadas al Servicio Médico."
+AVISO_ENFERMEDAD_RESPUESTA = (
+    "Para avisar una enfermedad, debés comunicarte con tu responsable directo y con el área de RRHH "
+    "antes de las 9:00 hs del día de ausencia."
+)
+
+JUSTIFICAR_LICENCIA_MEDICA_MENU = (
+    "¿Qué licencia médica querés justificar?\n"
+    "A. Certificado médico\n"
+    "B. Exodoncia\n"
+    "C. Donación de sangre"
+)
+
+FORMULARIO_EXODONCIA_URL = "/static/forms/exodoncia.pdf"
+FORMULARIO_DONACION_SANGRE_URL = "/static/forms/donacion_sangre.pdf"
+
+CERTIFICADO_MEDICO_RESPUESTA = (
+    "Para justificar una licencia médica, debés presentar el certificado emitido por el médico tratante "
+    "dentro de las 48 hs de reincorporarte."
+)
+
+LICENCIA_EXODONCIA_RESPUESTA = (
+    "Para justificar licencia por exodoncia, debés presentar el certificado del odontólogo. "
+    f"Podés descargar el formulario aquí: {FORMULARIO_EXODONCIA_URL}"
+)
+
+LICENCIA_DONACION_SANGRE_RESPUESTA = (
+    "Para justificar licencia por donación de sangre, debés presentar el comprobante del banco de sangre. "
+    f"Podés descargar el formulario aquí: {FORMULARIO_DONACION_SANGRE_URL}"
+)
+
+PROXIMA_CITA_RESPUESTA = (
+    "Próximamente este flujo se conectará con la plataforma SIMEF para informarte "
+    "si tenés una próxima cita médica programada."
 )
 
 SOPORTE_MENU = "Ingresaste al módulo de Soporte."

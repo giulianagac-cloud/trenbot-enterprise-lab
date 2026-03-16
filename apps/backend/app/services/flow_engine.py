@@ -4,14 +4,19 @@ import unicodedata
 from app.core.messages import (
     ACCESO_RESPUESTA,
     ADMINISTRACION_PERSONAL_MENU,
+    AVISO_ENFERMEDAD_RESPUESTA,
     BUSQUEDAS_MENU,
-    CERTIFICADO_RESPUESTA,
+    CERTIFICADO_MEDICO_RESPUESTA,
     EXAMEN_RESPUESTA,
     FALLBACK_MAIN_MENU,
     FALLBACK_MODULE_MENU,
+    JUSTIFICAR_LICENCIA_MEDICA_MENU,
+    LICENCIA_DONACION_SANGRE_RESPUESTA,
+    LICENCIA_EXODONCIA_RESPUESTA,
     LICENCIAS_DISPONIBLES_RESPUESTA,
     LICENCIAS_MENU,
     MUDANZA_RESPUESTA,
+    PROXIMA_CITA_RESPUESTA,
     SERVICIO_MEDICO_MENU,
     SOPORTE_MENU,
     VACACIONES_RESPUESTA,
@@ -94,10 +99,57 @@ class FlowEngine:
     ) -> FlowResult | None:
         # Servicio Médico
         if state.flow_state == "servicio_medico_menu":
-            if any(word in normalized for word in ("turno", "medico", "certificado")):
+            if normalized in ("a", "a.") or any(
+                word in normalized for word in ("enfermedad", "aviso", "enferme")
+            ):
                 return FlowResult(
-                    flow_state="servicio_medico_menu",
-                    reply_text=CERTIFICADO_RESPUESTA,
+                    flow_state="aviso_enfermedad",
+                    reply_text=AVISO_ENFERMEDAD_RESPUESTA,
+                )
+
+            if normalized in ("b", "b.") or any(
+                word in normalized for word in ("justificar", "licencia", "certificado", "medica")
+            ):
+                return FlowResult(
+                    flow_state="justificar_licencia_medica_menu",
+                    reply_text=JUSTIFICAR_LICENCIA_MEDICA_MENU,
+                )
+
+            if normalized in ("c", "c.") or any(
+                word in normalized for word in ("cita", "proxima", "turno")
+            ):
+                return FlowResult(
+                    flow_state="proxima_cita",
+                    reply_text=PROXIMA_CITA_RESPUESTA,
+                )
+
+        return None
+
+    def _handle_justificar_licencia_medica(
+        self, state: ConversationState, normalized: str
+    ) -> FlowResult | None:
+        # Menú Justificar Licencia Médica
+        if state.flow_state == "justificar_licencia_medica_menu":
+            if normalized in ("a", "a.") or any(
+                word in normalized for word in ("certificado", "medico")
+            ):
+                return FlowResult(
+                    flow_state="certificado_medico",
+                    reply_text=CERTIFICADO_MEDICO_RESPUESTA,
+                )
+
+            if normalized in ("b", "b.") or "exodoncia" in normalized:
+                return FlowResult(
+                    flow_state="licencia_exodoncia",
+                    reply_text=LICENCIA_EXODONCIA_RESPUESTA,
+                )
+
+            if normalized in ("c", "c.") or any(
+                word in normalized for word in ("donacion", "sangre")
+            ):
+                return FlowResult(
+                    flow_state="licencia_donacion_sangre",
+                    reply_text=LICENCIA_DONACION_SANGRE_RESPUESTA,
                 )
 
         return None
@@ -187,6 +239,12 @@ class FlowEngine:
             "justificar_vacaciones",
             "justificar_examen",
             "justificar_mudanza",
+            "aviso_enfermedad",
+            "justificar_licencia_medica_menu",
+            "certificado_medico",
+            "licencia_exodoncia",
+            "licencia_donacion_sangre",
+            "proxima_cita",
         ) and normalized in ("volver", "menu", "menú", "inicio"):
             return FlowResult(
                 flow_state="main_menu",
@@ -205,6 +263,11 @@ class FlowEngine:
 
         # Servicio Médico
         result = self._handle_servicio_medico(state, normalized)
+        if result:
+            return result
+
+        # Justificar Licencia Médica
+        result = self._handle_justificar_licencia_medica(state, normalized)
         if result:
             return result
 

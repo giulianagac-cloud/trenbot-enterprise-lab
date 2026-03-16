@@ -1,6 +1,6 @@
 import pytest
 
-from app.core.messages import ACCESO_RESPUESTA, ADMINISTRACION_PERSONAL_MENU, BUSQUEDAS_MENU, CERTIFICADO_RESPUESTA, FALLBACK_MAIN_MENU, FALLBACK_MODULE_MENU, LICENCIAS_DISPONIBLES_RESPUESTA, SERVICIO_MEDICO_MENU, SOPORTE_MENU, VOLVER_MENU_PRINCIPAL
+from app.core.messages import ACCESO_RESPUESTA, ADMINISTRACION_PERSONAL_MENU, AVISO_ENFERMEDAD_RESPUESTA, BUSQUEDAS_MENU, CERTIFICADO_MEDICO_RESPUESTA, FALLBACK_MAIN_MENU, FALLBACK_MODULE_MENU, JUSTIFICAR_LICENCIA_MEDICA_MENU, LICENCIA_DONACION_SANGRE_RESPUESTA, LICENCIA_EXODONCIA_RESPUESTA, LICENCIAS_DISPONIBLES_RESPUESTA, PROXIMA_CITA_RESPUESTA, SERVICIO_MEDICO_MENU, SOPORTE_MENU, VOLVER_MENU_PRINCIPAL
 from app.domain.conversation import ConversationState
 from app.services.flow_engine import FlowEngine
 
@@ -38,6 +38,12 @@ def test_flow_engine_routes_from_administracion_personal_menu(
         "justificar_vacaciones",
         "justificar_examen",
         "justificar_mudanza",
+        "aviso_enfermedad",
+        "justificar_licencia_medica_menu",
+        "certificado_medico",
+        "licencia_exodoncia",
+        "licencia_donacion_sangre",
+        "proxima_cita",
     ],
 )
 def test_flow_engine_returns_to_main_menu_from_submenus(
@@ -182,15 +188,18 @@ def test_flow_engine_routes_from_main_menu(
 
 
 @pytest.mark.parametrize(
-    "user_input",
+    ("user_input", "expected_flow_state", "expected_reply_text"),
     [
-        "turno",
-        "medico",
-        "certificado",
+        ("a", "aviso_enfermedad", AVISO_ENFERMEDAD_RESPUESTA),
+        ("enfermedad", "aviso_enfermedad", AVISO_ENFERMEDAD_RESPUESTA),
+        ("b", "justificar_licencia_medica_menu", JUSTIFICAR_LICENCIA_MEDICA_MENU),
+        ("licencia", "justificar_licencia_medica_menu", JUSTIFICAR_LICENCIA_MEDICA_MENU),
+        ("c", "proxima_cita", PROXIMA_CITA_RESPUESTA),
+        ("turno", "proxima_cita", PROXIMA_CITA_RESPUESTA),
     ],
 )
-def test_flow_engine_returns_servicio_medico_response(
-    user_input: str,
+def test_flow_engine_routes_from_servicio_medico_menu(
+    user_input: str, expected_flow_state: str, expected_reply_text: str
 ) -> None:
     engine = FlowEngine()
     state = ConversationState(
@@ -200,8 +209,34 @@ def test_flow_engine_returns_servicio_medico_response(
 
     result = engine.next_step(state=state, user_input=user_input)
 
-    assert result.flow_state == "servicio_medico_menu"
-    assert result.reply_text == CERTIFICADO_RESPUESTA
+    assert result.flow_state == expected_flow_state
+    assert result.reply_text == expected_reply_text
+
+
+@pytest.mark.parametrize(
+    ("user_input", "expected_flow_state", "expected_reply_text"),
+    [
+        ("a", "certificado_medico", CERTIFICADO_MEDICO_RESPUESTA),
+        ("certificado", "certificado_medico", CERTIFICADO_MEDICO_RESPUESTA),
+        ("b", "licencia_exodoncia", LICENCIA_EXODONCIA_RESPUESTA),
+        ("exodoncia", "licencia_exodoncia", LICENCIA_EXODONCIA_RESPUESTA),
+        ("c", "licencia_donacion_sangre", LICENCIA_DONACION_SANGRE_RESPUESTA),
+        ("donacion", "licencia_donacion_sangre", LICENCIA_DONACION_SANGRE_RESPUESTA),
+    ],
+)
+def test_flow_engine_routes_from_justificar_licencia_medica_menu(
+    user_input: str, expected_flow_state: str, expected_reply_text: str
+) -> None:
+    engine = FlowEngine()
+    state = ConversationState(
+        session_id="test-session",
+        flow_state="justificar_licencia_medica_menu",
+    )
+
+    result = engine.next_step(state=state, user_input=user_input)
+
+    assert result.flow_state == expected_flow_state
+    assert result.reply_text == expected_reply_text
 
 
 @pytest.mark.parametrize(
@@ -334,8 +369,8 @@ def test_flow_engine_routes_conversational_flow_to_servicio_medico() -> None:
         session_id="test-session",
         flow_state=step_1.flow_state,
     )
-    step_2 = engine.next_step(state=state, user_input="certificado")
-    assert step_2.flow_state == "servicio_medico_menu"
+    step_2 = engine.next_step(state=state, user_input="enfermedad")
+    assert step_2.flow_state == "aviso_enfermedad"
 
 
 def test_flow_engine_routes_conversational_flow_to_busquedas_internas() -> None:
