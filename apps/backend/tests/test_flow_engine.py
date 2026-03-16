@@ -35,6 +35,9 @@ def test_flow_engine_routes_from_administracion_personal_menu(
         "busquedas_internas_menu",
         "servicio_medico_menu",
         "soporte_menu",
+        "justificar_vacaciones",
+        "justificar_examen",
+        "justificar_mudanza",
     ],
 )
 def test_flow_engine_returns_to_main_menu_from_submenus(
