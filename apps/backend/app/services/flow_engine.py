@@ -39,7 +39,18 @@ class FlowEngine:
     ) -> FlowResult | None:
         # Menú principal
         if state.flow_state == "main_menu":
-            if any(word in normalized for word in ("administracion", "personal", "licencias", "admin")):
+            if normalized in ("justificar licencia", "justificar licencias"):
+                return FlowResult(
+                    flow_state="justificar_licencias_menu",
+                    reply_text=LICENCIAS_MENU,
+                )
+
+            if any(
+                word in normalized
+                for word in (
+                    "administracion", "personal", "licencias", "licencia", "admin"
+                )
+            ):
                 return FlowResult(
                     flow_state="administracion_personal_menu",
                     reply_text=ADMINISTRACION_PERSONAL_MENU,
@@ -173,6 +184,9 @@ class FlowEngine:
             "busquedas_internas_menu",
             "servicio_medico_menu",
             "soporte_menu",
+            "justificar_vacaciones",
+            "justificar_examen",
+            "justificar_mudanza",
         ) and normalized in ("volver", "menu", "menú", "inicio"):
             return FlowResult(
                 flow_state="main_menu",
@@ -209,27 +223,7 @@ class FlowEngine:
         if result:
             return result
 
-        # Flujos genéricos heredados del scaffold
-        if any(keyword in normalized for keyword in ("vacation", "leave", "time off")):
-            return FlowResult(
-                flow_state="leave_guidance",
-                reply_text=(
-                    "Puedo ayudarte con el circuito de licencias. "
-                    "Para empezar, indicame si se trata de vacaciones, licencia médica u otro tipo de ausencia."
-                ),
-            )
-
-        if any(keyword in normalized for keyword in ("salary", "payroll", "receipt")):
-            return FlowResult(
-                flow_state="payroll_support",
-                reply_text=(
-                    "Puedo ayudarte con temas de liquidación y recibo de sueldo. "
-                    "Indicame si necesitás tu recibo, fecha de pago o revisar una incidencia de liquidación."
-                ),
-            )
-
         # Fallback contextual final
-        # Respuesta por defecto
         return FlowResult(
             flow_state=state.flow_state,
             reply_text=(
